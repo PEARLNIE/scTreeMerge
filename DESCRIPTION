@@ -1,0 +1,31 @@
+Package: scTreeMerge
+Type: Package
+Title: scTreeMerge: An ensemble hierarchical clustering framework for single-cell RNA-seq data
+Version: 0.0.0.9000
+Authors@R: 
+    c(person("Xiner", "Nie", role = c("aut", "cre"),
+      email = "xiner@cqu.edu.cn",
+      comment = c(ORCID = "0000-0003-0853-7577")),
+      person("Bo", "Li", role = c("aut"),
+      email = "libo@cqnu.edu.cn",
+      comment = c(ORCID = "0000-0001-9944-0003")))
+Maintainer: Xiner Nie <xiner@cqu.edu.cn>
+Description: This is a package which provides an ensenmble framework for cell segregation in 
+    scRNA-seq data analysis. It returns a optimal tree by merging hierarchical clustering 
+    partitions.
+License: GPL-3
+Depends: R (>= 4.1.0)
+Imports: Seurat,
+         philentropy,
+         ape,
+         phangorn,
+         parallelDist,
+         sigclust,
+         igraph,
+         stringr,
+         stats, 
+         methods
+biocViews: 
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.0
