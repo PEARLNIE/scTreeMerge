@@ -24,9 +24,3 @@ setClass(Class = "Stree",
                       k = "integer",
                       pvalue = "numeric"))
 
-
-
-
-
-
-
