@@ -34,7 +34,7 @@
 #' m1 <- findBitrees(b$partition, c("dtree", "ptree"))
 #' m2 <- findBitrees(b$partition, "all")
 
-findBitrees <- function(treelist, format = c("all")) {
+findBitrees <- function(treelist, format = "all") {
 
   # Errors checking
   if (!inherits(treelist, "multiPhylo"))
