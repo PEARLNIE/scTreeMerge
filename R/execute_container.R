@@ -3,7 +3,9 @@
 #' @importFrom babelwhale list_docker_images pull_container
 #' @importFrom tidyr unite
 #' @importFrom dplyr pull
-
+#'
+#' @export
+#'
 execute_container <- function(ref_data, verbose) {
 
   # Process file path-----------------------------------------------------------

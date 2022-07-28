@@ -2,6 +2,7 @@
 
 export(calPvalue)
 export(compareTiplabs)
+export(execute_container)
 export(findBitrees)
 export(findDim)
 export(findPOPtrees)
