@@ -4,7 +4,7 @@
 \alias{findBitrees}
 \title{Tress from bipartition data}
 \usage{
-findBitrees(treelist, format = c("all"))
+findBitrees(treelist, format = "all")
 }
 \arguments{
 \item{treelist}{an object of class \code{multiPhylo}.}
