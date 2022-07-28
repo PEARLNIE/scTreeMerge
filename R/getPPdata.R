@@ -38,7 +38,7 @@ getPPdata <- function(x, normalization = TRUE, filter = TRUE, nfeatures = 2000) 
   rownames(x) <- sapply(X = rownames(x), function(i) gsub(pattern = "\\|", replacement = "-", x = i))
 
   if (normalization == TRUE)
-    x <- apply(x, 2, function(i){i/sum(i)})
+    x <- apply(x, 2, function(i) {i/sum(i)})
   if (all(filter == TRUE|!is.null(nfeatures))) {
     # if (!require("Seurat")) BiocManager::install("Seurat")
     # suppressPackageStartupMessages(library(Seurat))
