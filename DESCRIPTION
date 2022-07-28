@@ -28,8 +28,7 @@ Imports: Seurat,
          dynwrap,
          babelwhale,
          tidyr,
-         dplyr,
-         magrittr
+         dplyr
 biocViews: 
 Encoding: UTF-8
 LazyData: true
