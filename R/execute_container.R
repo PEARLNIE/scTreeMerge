@@ -46,7 +46,7 @@ execute_container <- function(ref_data, verbose) {
     babelwhale::pull_container(container_id = "xinern/sctreemerge:v1.0.0")
   }
   ### (3. docker container id
-  container_id <- "xinern/sctreemerge"
+  container_id <- "xinern/sctreemerge:v1.0.0"
 
 
 
