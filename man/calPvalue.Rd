@@ -4,7 +4,7 @@
 \alias{calPvalue}
 \title{Calculating P values of individual clsters}
 \usage{
-calPvalue(x, clusters, nsim = 10)
+calPvalue(x, clusters, nsim = 1000)
 }
 \arguments{
 \item{x}{an object of class \code{'matrix'}. Each column corresponds to a sample and each row to a variable.}

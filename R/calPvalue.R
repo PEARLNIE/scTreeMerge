@@ -36,7 +36,7 @@
 
 
 
-calPvalue <- function(x, clusters, nsim = 10) {
+calPvalue <- function(x, clusters, nsim = 1000) {
 
   # Error checking.
   # if (!inherits(x, c("data.frame", "matrix")))

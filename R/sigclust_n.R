@@ -47,10 +47,10 @@ sigclust_n <- function(x, nsim, label)
     #     xcindex <- xclust$cindex
     #   }
     # }
-    xvareigen <- .vareigen(x, n, p, icovest = 1)
+    xvareigen <- sigclust::.vareigen(x, n, p, icovest = 3)
     simcindex <- rep(0, nsim)
     for (i in 1:nsim) {
-      xsim <- .simnull(xvareigen$vsimeigval, n, p)
+      xsim <- sigclust::.simnull(xvareigen$vsimeigval, n, p)
       simcindex[i] <- xsim$cindex
     }
     # if (labflag == 0) {

@@ -67,19 +67,15 @@ minPkTree <- function(x, tree, min_k = NULL, max_k = NULL, iteration = 10) {
   res <- matrix(NA, nrow = r, ncol = c, dimnames = list(paste("tree", rep(1:r), sep = ""), 2:max_k))
 
   for(u in 1:r) {
-    for (n in 1:iteration) {
-      p <- NULL
-      k <- NULL
-      for(i in min_k:max_k) {
-        tr <- as.hclust.phylo(tree[[1]])
-        cl <- cutree(tr, i)
-        tmp <- calPvalue(x = x, clusters = cl, nsim = 10)
-        p <- c(p, tmp)
-
-      }
-      res_tmp[n, ] <- p
+    tr <- as.hclust.phylo(tree[[u]])
+    p <- NULL
+    k <- NULL
+    for(i in min_k:max_k) {
+      cl <- cutree(tr, i)
+      tmp <- calPvalue(x = x, clusters = cl, nsim = 1000)
+      p <- c(p, tmp)
     }
-    res[u, ] <- colSums(res_tmp)/iteration
+    res[u, ] <- p
   }
   # t <- res
   res <- round(res, digits = 4)
