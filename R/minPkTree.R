@@ -43,7 +43,7 @@
 #' str(s)
 
 
-minPkTree <- function(x, tree, min_k = NULL, max_k = NULL, iteration = 10) {
+minPkTree <- function(x, tree, min_k = NULL, max_k = NULL) {
 
 
   # Error checking.
