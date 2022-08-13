@@ -22,7 +22,7 @@
 #' @export
 #' @importFrom parallelDist parDist
 #' @importFrom phangorn as.phyDat optim.parsimony pratchet parsimony pml optim.pml upgma
-#' @importFrom ape nj
+#' @importFrom ape nj rtree
 #' @importFrom stats anova AIC
 #' @examples
 #' data(GSE45719_268_count)
@@ -52,7 +52,7 @@ findBitrees <- function(treelist, format = "all") {
   x <- dat
   class(x) <- "phyDat"
   attr(x, "weight") <- rep(1, nrow(dat))
-  res <- rtree(length(treelist[[1]]$tip.label))
+  res <- ape::rtree(length(treelist[[1]]$tip.label))
   res_name <- NULL
 
   d <- parallelDist::parDist(t(dat), method = "euclidean")
