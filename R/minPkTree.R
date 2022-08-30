@@ -75,7 +75,7 @@ minPkTree <- function(x, tree, min_k = NULL, max_k = NULL) {
 
     if(!is.null(branch_len)) {
 
-      warning("tree[[", u, "]] ", "has no branch length.")
+
       # if (!is.null(data)) {
       #   dat <- data
       #   class(dat) <- "phyDat"
@@ -94,6 +94,9 @@ minPkTree <- function(x, tree, min_k = NULL, max_k = NULL) {
         p <- c(p, tmp)
       }
     } else {
+
+      warning("tree[[", u, "]] ", "has no branch length.")
+
       tr2 <- phylogram::as.dendrogram.phylo(tr1)
       for(i in min_k:max_k) {
         cl <- dendextend::cutree_1k.dendrogram(tr2, i, warn = TRUE)
