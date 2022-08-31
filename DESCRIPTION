@@ -13,7 +13,7 @@ Maintainer: Xiner Nie <xiner@cqu.edu.cn>
 Description: This is a package which provides an ensenmble framework for cell segregation in 
     scRNA-seq data analysis. It returns a optimal tree by merging hierarchical clustering 
     partitions.
-License: GPL-3
+License: GPL-3 + file LICENSE
 Depends: R (>= 4.1.0)
 Imports: Seurat,
          philentropy,
@@ -28,7 +28,9 @@ Imports: Seurat,
          dynwrap,
          babelwhale,
          tidyr,
-         dplyr
+         dplyr,
+         phylogram, 
+         dendextend
 biocViews: 
 Encoding: UTF-8
 LazyData: true

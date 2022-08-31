@@ -9,7 +9,7 @@ getDlist(x, mtd = "euclidean", p = 2)
 \arguments{
 \item{x}{an object of class \code{matrix}. Each column corresponds to a sample and each row to a variable.}
 
-\item{mtd}{a character string that represents the distance measure to be used. It could be one or some of the 47 measures. If users want to use all the measures, \code{all} could be selected in this function. For more information, please see Details.}
+\item{mtd}{a character string that represents the distance measure to be used. It could be one or some of the 47 measures(\code{showDistMethods()}). If users want to use all the measures, \code{all} could be selected in this function. For more information, please see Details.}
 
 \item{p}{The power of Minkowski distance. Note that setting p = 1 is equivalent to calculating the Manhattan distance and setting p = 2 is equivalent to calculating the Euclidean distance. Default: \code{p = 2}.}
 }

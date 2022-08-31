@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of scTreeMerge is to obtain a optimal tree by merging hierarchical clustering partitions. It provides provides an ensenmble framework for cell segregation in scRNA-seq data analysis.
+The goal of scTreeMerge is to obtain a optimal tree by merging hierarchical clustering partitions. It provides provides an ensemble framework for cell segregation in scRNA-seq data analysis.
 
 ## Installation
 

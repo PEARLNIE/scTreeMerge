@@ -4,12 +4,10 @@
 \alias{findPOPtrees}
 \title{Find the popular trees}
 \usage{
-findPOPtrees(treelist, namelist)
+findPOPtrees(treelist)
 }
 \arguments{
 \item{treelist}{an object of class \code{multiPhylo}.}
-
-\item{namelist}{a \code{chanracter} vector including the same number as the parameter \code{treelist}.}
 }
 \value{
 an object of class \code{list}.
@@ -28,6 +26,6 @@ d <- getDlist(x = t(processed_data), mtd = c("maximum", "euclidean", "manhattan"
 
 b <- getBasicPartitions(d, method = "all")
 
-m <- findPOPtrees(b$partition, b$name)
+m <- findPOPtrees(b$partition)
 attr(m[[1]], "number")
 }

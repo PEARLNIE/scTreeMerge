@@ -17,7 +17,6 @@
 #' This function is to find the popular trees with the frequency of tree types.
 #'
 #' @param treelist an object of class \code{multiPhylo}.
-#' @param namelist a \code{chanracter} vector including the same number as the parameter \code{treelist}.
 #'
 #' @return an object of class \code{list}.
 #' @export
@@ -35,10 +34,14 @@
 #'
 #' b <- getBasicPartitions(d, method = "all")
 #'
-#' m <- findPOPtrees(b$partition, b$name)
+#' m <- findPOPtrees(b$partition)
 #' attr(m[[1]], "number")
 
-findPOPtrees <- function(treelist, namelist) {
+findPOPtrees <- function(treelist) {
+
+  namelist <- ifelse(is.null(names(treelist)),
+                     paste("tree", 1:length(tree), sep = ""),
+                     names(treelist))
 
   # ---- Comparing tip labels.
   eq <- compareTiplabs(treelist)

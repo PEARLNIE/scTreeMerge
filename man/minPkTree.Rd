@@ -31,7 +31,7 @@ d <- getDlist(x = t(processed_data), mtd = c("maximum", "euclidean", "manhattan"
                                            "non-intersection", "wavehedges", "czekanowski"))
 b <- getBasicPartitions(d, method = "all")
 m <- findBitrees(b$partition, "all")
-s <- minPkTree(x = processed_data, tree = m, min_k = 2, max_k = 3, iteration = 10)
+s <- minPkTree(x = processed_data, tree = m)
 class(s)
 str(s)
 }

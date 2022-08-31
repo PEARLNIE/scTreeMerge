@@ -28,6 +28,8 @@
 #' @importFrom ape as.hclust.phylo
 #' @importFrom phangorn acctran
 #' @importFrom stats cutree
+#' @importFrom phylogram as.dendrogram.phylo
+#' @importFrom dendextend cutree_1k.dendrogram
 #' @examples
 #' data(GSE45719_268_count)
 #' processed_data <- getPPdata(GSE45719_268_count)
@@ -38,7 +40,7 @@
 #'                                            "non-intersection", "wavehedges", "czekanowski"))
 #' b <- getBasicPartitions(d, method = "all")
 #' m <- findBitrees(b$partition, "all")
-#' s <- minPkTree(x = processed_data, tree = m, min_k = 2, max_k = 3, iteration = 10)
+#' s <- minPkTree(x = processed_data, tree = m)
 #' class(s)
 #' str(s)
 
@@ -50,11 +52,9 @@ minPkTree <- function(x, tree, min_k = NULL, max_k = NULL) {
   # if (!inherits(x, c("data.frame", "matrix")))
   #   stop("x must be object of class 'data.frame' or 'matrix'.")
   if (!inherits(x, "matrix"))
-    stop("x must be object of class or 'matrix'.")
+    x <- as.matrix(x)
   if (!class(tree) %in% c("phylo", "multiPhylo"))
     stop("tree must be object of class 'phylo' or 'multiPhylo'.")
-
-
 
 
   if (is.null(min_k))
@@ -64,48 +64,21 @@ minPkTree <- function(x, tree, min_k = NULL, max_k = NULL) {
 
   r <- length(tree)
   c <- max_k - min_k + 1
-  dname <- list(paste("iter", rep(1:iteration), sep = ""), 2:max_k)
-  res_tmp <- matrix(NA, nrow = iteration, ncol = c, dimnames = dname)
   res <- matrix(NA, nrow = r, ncol = c, dimnames = list(paste("tree", rep(1:r), sep = ""), 2:max_k))
 
   for(u in 1:r) {
     p <- NULL
     tr1 <- tree[[u]]
-    branch_len <- tr1$edge.length
+    tr2 <- phylogram::as.dendrogram.phylo(tr1)
 
-    if(!is.null(branch_len)) {
-
-
-      # if (!is.null(data)) {
-      #   dat <- data
-      #   class(dat) <- "phyDat"
-      #   attr(dat, "weight") <- rep(1, nrow(data))
-      # } else {
-      #   stop("'data' should not be NULL, because 'tree[[", u, "]]' ", "has no branch length.")
-      # }
-      #
-      # # add banch length.
-      # tr1 <- phangorn::acctran(tr1, dat)
-
-      tr2 <- as.hclust.phylo(t)
-      for(i in min_k:max_k) {
-        cl <- cutree(tr2, i)
-        tmp <- calPvalue(x = x, clusters = cl, nsim = 1000)
-        p <- c(p, tmp)
-      }
-    } else {
-
-      warning("tree[[", u, "]] ", "has no branch length.")
-
-      tr2 <- phylogram::as.dendrogram.phylo(tr1)
-      for(i in min_k:max_k) {
-        cl <- dendextend::cutree_1k.dendrogram(tr2, i, warn = TRUE)
-        tmp <- ifelse(any(is.na(cl)), NA, calPvalue(x, cl, nsim = 1000))
-        p <- c(p, tmp)
-      }
+    for(i in min_k:max_k) {
+      cl <- dendextend::cutree_1k.dendrogram(tr2, i, warn = FALSE)
+      tmp <- ifelse(any(is.na(cl)), NA, calPvalue(x, cl, nsim = 1000))
+      p <- c(p, tmp)
     }
     res[u, ] <- p
   }
+
   res <- round(res, digits = 4)
   res_min <- min(res, na.rm = TRUE)
   ind <- findDim(x = res, object = res_min)
@@ -117,7 +90,16 @@ minPkTree <- function(x, tree, min_k = NULL, max_k = NULL) {
 }
 
 
-
+# if (!is.null(data)) {
+#   dat <- data
+#   class(dat) <- "phyDat"
+#   attr(dat, "weight") <- rep(1, nrow(data))
+# } else {
+#   stop("'data' should not be NULL, because 'tree[[", u, "]]' ", "has no branch length.")
+# }
+#
+# # add banch length.
+# tr1 <- phangorn::acctran(tr1, dat)
 
 
 

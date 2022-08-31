@@ -54,11 +54,14 @@ getBasicPartitions <- function(d, method = "complete") {
     } else {
       if (inherits(d, "list")) {
         er <- NULL
+        dname <- names(d)
         for (e in 1:length(d)) {
           if (any(is.nan(d[[e]])))
-            er <- c(er, e)
-          if (!is.null(er) & e == length(d))
-            stop("d should not be used, because trees with the above indexes ", print(er), " have NaNs.")
+            er <- c(er, dname[e])
+          if (!is.null(er) & e == length(d)) {
+            print(er)
+            stop("d should not be used because it has NaNs value producted by the indexes above!")
+          }
         }
         dname <- names(d)
       }
@@ -88,19 +91,18 @@ getBasicPartitions <- function(d, method = "complete") {
      v <- method
   }
 
-  for (i in 1:u) {
-    message("****************")
-    message(paste("------", i, "-------", sep = " "))
-    message("****************")
+  for (i in v) {
+    message(paste("[------", i, "-------]", sep = " "))
 
-    for (g in v) {
-      print(g)
-      hc <- hclust(d[[i]], g)
+    for (g in 1:u) {
+      print(unames[g])
+      hc <- hclust(d[[g]], i)
       hc_tmp <- as.phylo(hc)
       res <- c(res, hc_tmp)
-      ns <- c(ns, paste(unames[[i]], g, sep = " + "))
+      ns <- c(ns, paste(unames[[g]], i, sep = " + "))
     }
   }
+
   names(res) <- ns
   # Deleting the 1st
   res <- res[2:length(res)]

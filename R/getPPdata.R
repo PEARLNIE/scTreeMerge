@@ -33,12 +33,13 @@ getPPdata <- function(x, normalization = TRUE, filter = TRUE, nfeatures = 2000) 
   # if (!inherits(x, c("data.frame", "matrix")))
   #   stop("x must be object of class 'data.frame' or 'matrix'.")
   if (!inherits(x, "matrix"))
-    stop("x must be object of class 'matrix'.")
+    x <- as.matrix(x)
 
   rownames(x) <- sapply(X = rownames(x), function(i) gsub(pattern = "\\|", replacement = "-", x = i))
 
   if (normalization == TRUE)
     x <- apply(x, 2, function(i) {i/sum(i)})
+
   if (all(filter == TRUE|!is.null(nfeatures))) {
     # if (!require("Seurat")) BiocManager::install("Seurat")
     # suppressPackageStartupMessages(library(Seurat))
@@ -50,5 +51,6 @@ getPPdata <- function(x, normalization = TRUE, filter = TRUE, nfeatures = 2000) 
                                  nfeatures = nfeatures)
     seu_hvgs <- VariableFeatures(seu2)
   }
+
   res <- x[seu_hvgs, ]
 }

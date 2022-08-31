@@ -16,7 +16,7 @@
 #' @title Distance computation with lots of disatnce measures.
 #' @description  This is a distance matrix computation function which containins 47 measures. It computes between the rows of a matrix and return the distance matrix computed by choosing the specific measure.
 #' @param x an object of class \code{matrix}. Each column corresponds to a sample and each row to a variable.
-#' @param mtd a character string that represents the distance measure to be used. It could be one or some of the 47 measures. If users want to use all the measures, \code{all} could be selected in this function. For more information, please see Details.
+#' @param mtd a character string that represents the distance measure to be used. It could be one or some of the 47 measures(\code{showDistMethods()}). If users want to use all the measures, \code{all} could be selected in this function. For more information, please see Details.
 #' @param p The power of Minkowski distance. Note that setting p = 1 is equivalent to calculating the Manhattan distance and setting p = 2 is equivalent to calculating the Euclidean distance. Default: \code{p = 2}.
 #' @details This function implements 47 measures to quantify the disatnce between two objects:
 #' \itemize{
@@ -106,9 +106,11 @@ getDlist <- function(x, mtd = "euclidean", p = 2){
   # if (!inherits(x, c("data.frame", "matrix")))
   #   stop("x must be object of class 'data.frame' or 'matrix'.")
   if (!inherits(x, "matrix"))
-    stop("x must be object of class or 'matrix'.")
+    x <- as.matrix(x)
+
   if (all(length(mtd) > 1 & "all" %in% mtd))
     stop("'all' covers all 47 measures in this function. Once 'all' is chosen, there's no need to choose any of the 47 measures.")
+
 
   n <- c("maximum",
          "euclidean",
@@ -164,6 +166,9 @@ getDlist <- function(x, mtd = "euclidean", p = 2){
   res <- list()
   q <- 0
   for (i in mtd) {
+
+    message(paste("[------", i, "-------]", sep = " "))
+
     if (i == "maximum") {
       q <- q + 1
       res[[q]] <- dist(x = x,
@@ -192,7 +197,8 @@ getDlist <- function(x, mtd = "euclidean", p = 2){
     return(res[[1]])
   } else {
     return(res)
-    }
+  }
+
 }
 
 

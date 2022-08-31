@@ -42,7 +42,7 @@ calPvalue <- function(x, clusters, nsim = 1000) {
   # if (!inherits(x, c("data.frame", "matrix")))
   #   stop("x must be object of class 'data.frame' or 'matrix'.")
   if (!inherits(x, c("matrix")))
-    stop("x must be object of class 'matrix'.")
+    x <- as.matrix(x)
 
   ClustAssign <- as.character(clusters)
   n <- length(unique(ClustAssign))
