@@ -111,23 +111,14 @@ findBitrees <- function(treelist, format = "all") {
 
   if (any(format == "ltree")|"all" %in% format) {
     # ---- Maximum likelihood ----
-    fit_ini <- pml(tree = tre_ini,
-                   data = x,
-                   bf = NULL,
-                   Q = NULL,
-                   inv = 0,
-                   k = 1,
-                   shape = 1,
-                   rate = 1,
-                   model = NULL,
-                   site.rate = "gamma")
+    fit_ini <- pml(tree = tre_ini, data = x)
     # table(as.character(x))
 
-    fit <- optim.pml(object = fit_ini,
-                     optNni = TRUE, # optimized tree topology,
-                     optBf = TRUE, # optimized base frequencies,
-                     optQ = TRUE, # optimized rate matrix.
-                     optGamma = TRUE)
+    fit <- optim.pml(object = fit_ini)
+                     # optNni = TRUE, # optimized tree topology,
+                     # optBf = TRUE, # optimized base frequencies,
+                     # optQ = TRUE, # optimized rate matrix.
+                     # optGamma = TRUE
 
 
     anova(fit_ini, fit) # ***：Extremely significant
