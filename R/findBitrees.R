@@ -60,6 +60,7 @@ findBitrees <- function(treelist, format = "all") {
 
   if (any(format == "dtree")|"all" %in% format) {
     # ---- Distance-based ----
+    print("Distance-based")
     dtree <- upgma(d)
     # str(dtree)
     attr(dtree, "distance") <- "euclidean"
@@ -71,6 +72,7 @@ findBitrees <- function(treelist, format = "all") {
   tre_ini <- nj(d)
   if (any(format == "ptree")|"all" %in% format){
     # ---- Maximum parsimony ----
+    print("Maximum parsimony")
     tre_pars <- optim.parsimony(tree = tre_ini,
                                 data = x,
                                 method = "fitch",
@@ -111,6 +113,7 @@ findBitrees <- function(treelist, format = "all") {
 
   if (any(format == "ltree")|"all" %in% format) {
     # ---- Maximum likelihood ----
+    print("Maximum likelihood")
     fit_ini <- pml(tree = tre_ini, data = x)
     # table(as.character(x))
 

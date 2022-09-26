@@ -30,7 +30,8 @@ Imports: Seurat,
          tidyr,
          dplyr,
          phylogram, 
-         dendextend
+         dendextend,
+         parallel
 biocViews: 
 Encoding: UTF-8
 LazyData: true

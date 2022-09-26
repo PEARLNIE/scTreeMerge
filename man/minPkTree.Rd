@@ -4,7 +4,7 @@
 \alias{minPkTree}
 \title{Selecting one tree with a specific k from a set of phylo trees}
 \usage{
-minPkTree(x, tree, min_k = NULL, max_k = NULL)
+minPkTree(x, tree, min_k = NULL, max_k = NULL, mcores = NULL)
 }
 \arguments{
 \item{x}{an object of class \code{'matrix'}. Each column corresponds to a sample and each row to a variable.}
@@ -14,6 +14,8 @@ minPkTree(x, tree, min_k = NULL, max_k = NULL)
 \item{min_k}{integer value. minimum cluster number to evaluate.}
 
 \item{max_k}{integer value. maximum cluster number to evaluate.}
+
+\item{mcores}{the number of CPU cores.}
 }
 \value{
 an object of class \code{Stree} which is a list.

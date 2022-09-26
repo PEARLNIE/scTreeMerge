@@ -21,6 +21,7 @@
 #' @param tree an object of class \code{phylo} or \code{multiPhylo}.
 #' @param min_k integer value. minimum cluster number to evaluate.
 #' @param max_k integer value. maximum cluster number to evaluate.
+#' @param mcores the number of CPU cores.
 #'
 #' @return an object of class \code{Stree} which is a list.
 #' @export
@@ -30,6 +31,7 @@
 #' @importFrom stats cutree
 #' @importFrom phylogram as.dendrogram.phylo
 #' @importFrom dendextend cutree_1k.dendrogram
+#' @importFrom parallel detectCores makeCluster parLapply clusterExport
 #' @examples
 #' data(GSE45719_268_count)
 #' processed_data <- getPPdata(GSE45719_268_count)
@@ -45,48 +47,99 @@
 #' str(s)
 
 
-minPkTree <- function(x, tree, min_k = NULL, max_k = NULL) {
+minPkTree <- function(x, tree, min_k = NULL, max_k = NULL, mcores = NULL) {
 
 
   # Error checking.
   # if (!inherits(x, c("data.frame", "matrix")))
   #   stop("x must be object of class 'data.frame' or 'matrix'.")
   if (!inherits(x, "matrix"))
+
     x <- as.matrix(x)
+
   if (!class(tree) %in% c("phylo", "multiPhylo"))
+
     stop("tree must be object of class 'phylo' or 'multiPhylo'.")
 
 
   if (is.null(min_k))
+
     min_k <- 2
+
   if (is.null(max_k))
+
     max_k <- floor(sqrt(ncol(x)))
 
-  r <- length(tree)
-  c <- max_k - min_k + 1
-  res <- matrix(NA, nrow = r, ncol = c, dimnames = list(paste("tree", rep(1:r), sep = ""), 2:max_k))
+  if (is.null(mcores))
 
-  for(u in 1:r) {
+    mcores <- parallel::detectCores() - 1
+
+  r <- length(tree)
+
+  c <- max_k - min_k + 1
+
+  # res <- matrix(NA, nrow = r, ncol = c, dimnames = list(paste("tree", rep(1:r), sep = ""), 2:max_k))
+
+  mcl <- parallel::makeCluster(getOption("cl.cores", mcores))
+
+  clusterExport(mcl, varlist = c("tree", "min_k", "max_k", "x", "calPvalue", "res"), envir = environment())
+
+  res <- parallel::parLapply(mcl, 1:r, function(u) {
+
+    # print(names(tree)[u])
+
     p <- NULL
+
     tr1 <- tree[[u]]
+
     tr2 <- phylogram::as.dendrogram.phylo(tr1)
 
-    for(i in min_k:max_k) {
+    for (i in min_k:max_k) {
+
       cl <- dendextend::cutree_1k.dendrogram(tr2, i, warn = FALSE)
+
       tmp <- ifelse(any(is.na(cl)), NA, calPvalue(x, cl, nsim = 1000))
+
       p <- c(p, tmp)
     }
-    res[u, ] <- p
-  }
+
+    p
+
+  })
+
+  stopCluster(mcl)
+
+  dimnames(res) <- list(paste("tree", rep(1:r), sep = ""), 2:max_k)
+
+  # for(u in 1:r) {
+  #   print(names(tree)[u])
+  #   p <- NULL
+  #   tr1 <- tree[[u]]
+  #   tr2 <- phylogram::as.dendrogram.phylo(tr1)
+  #
+  #   for(i in min_k:max_k) {
+  #     cl <- dendextend::cutree_1k.dendrogram(tr2, i, warn = FALSE)
+  #     tmp <- ifelse(any(is.na(cl)), NA, calPvalue(x, cl, nsim = 1000))
+  #     p <- c(p, tmp)
+  #   }
+  #   res[u, ] <- p
+  # }
 
   res <- round(res, digits = 4)
+
   res_min <- min(res, na.rm = TRUE)
+
   ind <- findDim(x = res, object = res_min)
+
   col <- ind[1, 1]
+
   row <- ind[1, 2]
 
-  return(new("Stree", raw = res, tree = tree[[row]],
-             k = as.integer(colnames(res)[row]), pvalue = res_min))
+  return(new("Stree",
+             raw = res,
+             tree = tree[[row]],
+             k = as.integer(colnames(res)[row]),
+             pvalue = res_min))
 }
 
 
