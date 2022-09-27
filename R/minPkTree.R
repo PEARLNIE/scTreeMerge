@@ -82,9 +82,9 @@ minPkTree <- function(x, tree, min_k = NULL, max_k = NULL, mcores = NULL) {
 
   mcl <- parallel::makeCluster(getOption("cl.cores", mcores))
 
-  clusterExport(mcl, varlist = c("tree", "min_k", "max_k", "x", "calPvalue", "res"), envir = environment())
+  clusterExport(mcl, varlist = c("tree", "min_k", "max_k", "x", "calPvalue"), envir = environment())
 
-  res <- parallel::parLapply(mcl, 1:r, function(u) {
+  res <- parallel::parSapply(mcl, 1:r, function(u) {
 
     # print(names(tree)[u])
 
@@ -109,7 +109,11 @@ minPkTree <- function(x, tree, min_k = NULL, max_k = NULL, mcores = NULL) {
 
   stopCluster(mcl)
 
-  dimnames(res) <- list(paste("tree", rep(1:r), sep = ""), 2:max_k)
+  colnames(res) <- paste("tree", rep(1:r), sep = "")
+
+  rownames(res) <- 2:max_k
+
+  res <- t(res)
 
   # for(u in 1:r) {
   #   print(names(tree)[u])
@@ -141,7 +145,6 @@ minPkTree <- function(x, tree, min_k = NULL, max_k = NULL, mcores = NULL) {
              k = as.integer(colnames(res)[row]),
              pvalue = res_min))
 }
-
 
 # if (!is.null(data)) {
 #   dat <- data
