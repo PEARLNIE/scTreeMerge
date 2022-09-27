@@ -78,7 +78,7 @@ minPkTree <- function(x, tree, min_k = NULL, max_k = NULL, mcores = NULL) {
 
   c <- max_k - min_k + 1
 
-  tree <- lapply(tree, phylogram::as.dendrogram.phylo)
+  tree <- lapply(tree, )
 
 
   mcl <- parallel::makeCluster(getOption("cl.cores", mcores))
@@ -93,9 +93,11 @@ minPkTree <- function(x, tree, min_k = NULL, max_k = NULL, mcores = NULL) {
 
     tr1 <- tree[[u]]
 
+    tr2 <- phylogram::as.dendrogram.phylo(tr1)
+
     for (i in min_k:max_k) {
 
-      cl <- dendextend::cutree_1k.dendrogram(tr1, i, warn = FALSE)
+      cl <- dendextend::cutree_1k.dendrogram(tr2, i, warn = FALSE)
 
       tmp <- ifelse(any(is.na(cl)), NA, calPvalue(x, cl, nsim = 1000))
 
