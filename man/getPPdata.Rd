@@ -4,12 +4,10 @@
 \alias{getPPdata}
 \title{Data preprocessing}
 \usage{
-getPPdata(x, normalization = TRUE, filter = TRUE, nfeatures = 2000)
+getPPdata(x, filter = TRUE, nfeatures = 2000)
 }
 \arguments{
 \item{x}{an object of class \code{matrix}. Each column corresponds to a sample and each row to a variable.}
-
-\item{normalization}{a logical value indicating whether to normalize the data. Default: \code{normalization = TRUE}.}
 
 \item{filter}{a logical value indicating whether to filter features. Default: \code{filter = TRUE}.}
 

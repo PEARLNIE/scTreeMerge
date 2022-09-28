@@ -100,16 +100,19 @@
 
 
 # Calculating with many distance metrics.
-getDlist <- function(x, mtd = "euclidean", p = 2){
+getDlist <- function(x, mtd = "euclidean", p = 2) {
 
   # Error checking.
   # if (!inherits(x, c("data.frame", "matrix")))
   #   stop("x must be object of class 'data.frame' or 'matrix'.")
   if (!inherits(x, "matrix"))
+
     x <- as.matrix(x)
 
   if (all(length(mtd) > 1 & "all" %in% mtd))
-    stop("'all' covers all 47 measures in this function. Once 'all' is chosen, there's no need to choose any of the 47 measures.")
+
+    stop("'all' covers all 47 measures in this function. Once 'all' is chosen,
+         there's no need to choose any of the 47 measures.")
 
 
   n <- c("maximum",
@@ -159,43 +162,64 @@ getDlist <- function(x, mtd = "euclidean", p = 2){
          "taneja",
          "kumar-johnson",
          "avg")
+
   if ("all" %in% mtd)
+
     mtd <- n
 
   # Calculating the specific distance measures.
   res <- list()
+
   q <- 0
+
   for (i in mtd) {
 
     message(paste("[------", i, "-------]", sep = " "))
 
     if (i == "maximum") {
+
       q <- q + 1
-      res[[q]] <- dist(x = x,
-                       method = i,
-                       diag = FALSE,
-                       upper = FALSE,
-                       p = p)
+
+      res[[q]] <- dist(x = x, method = i, diag = FALSE, upper = FALSE, p = p)
+
     } else {
+
       q <- q + 1
-      res[[q]] <- distance(x = x,
-                           method = i,
-                           p = p,
-                           test.na = TRUE,
-                           unit = "log",
-                           est.prob = NULL,
-                           use.row.names = TRUE,
-                           as.dist.obj = TRUE,
-                           diag = FALSE,
-                           upper = FALSE,
-                           mute.message = TRUE)
+
+      if (i %in% c("kullback-leibler", "k_divergence", "matusita")) {
+
+        x <- t(apply(x, 1, function(i) {i/sum(i)}))
+
+        res[[q]] <- philentropy::distance(x = x, method = i, p = p, test.na = TRUE,
+
+                                          unit = "log", est.prob = NULL,
+
+                                          use.row.names = TRUE, as.dist.obj = TRUE,
+
+                                          diag = FALSE, upper = FALSE,mute.message = TRUE)
+
+      } else {
+
+        res[[q]] <- philentropy::distance(x = x, method = i, p = p, test.na = TRUE,
+
+                                          unit = "log", est.prob = NULL,
+
+                                          use.row.names = TRUE, as.dist.obj = TRUE,
+
+                                          diag = FALSE, upper = FALSE,mute.message = TRUE)
+      }
+
     }
   }
+
   names(res) <- mtd
 
   if (q == 1) {
+
     return(res[[1]])
+
   } else {
+
     return(res)
   }
 

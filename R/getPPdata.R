@@ -14,7 +14,6 @@
 #' @title Data preprocessing
 #' @description This function is used to preprocess input data.
 #' @param x an object of class \code{matrix}. Each column corresponds to a sample and each row to a variable.
-#' @param normalization a logical value indicating whether to normalize the data. Default: \code{normalization = TRUE}.
 #' @param filter a logical value indicating whether to filter features. Default: \code{filter = TRUE}.
 #' @param nfeatures a numeric value represents the number of the filtered features.
 #' @return an object of class \code{matrix}.
@@ -27,7 +26,7 @@
 #' dim(processed_data)
 
 
-getPPdata <- function(x, normalization = TRUE, filter = TRUE, nfeatures = 2000) {
+getPPdata <- function(x, filter = TRUE, nfeatures = 2000) {
 
   # Error checking.
   # if (!inherits(x, c("data.frame", "matrix")))
@@ -37,19 +36,18 @@ getPPdata <- function(x, normalization = TRUE, filter = TRUE, nfeatures = 2000) 
 
   rownames(x) <- sapply(X = rownames(x), function(i) gsub(pattern = "\\|", replacement = "-", x = i))
 
-  if (normalization == TRUE)
-    x <- apply(x, 2, function(i) {i/sum(i)})
+
 
   if (all(filter == TRUE|!is.null(nfeatures))) {
     # if (!require("Seurat")) BiocManager::install("Seurat")
     # suppressPackageStartupMessages(library(Seurat))
-    seu <- CreateSeuratObject(counts = x,
-                              min.cells = 3, # Retain genes that are expressed in at least three cells
-                              min.features = 200,)
-    seu2 <- FindVariableFeatures(seu,
-                                 selection.method = "vst",
-                                 nfeatures = nfeatures)
-    seu_hvgs <- VariableFeatures(seu2)
+    seu <- Seurat::CreateSeuratObject(counts = x,
+                                      min.cells = 3, # Retain genes that are expressed in at least three cells
+                                      min.features = 200,)
+    seu2 <- Seurat::FindVariableFeatures(seu,
+                                         selection.method = "vst",
+                                         nfeatures = nfeatures)
+    seu_hvgs <- Seurat::VariableFeatures(seu2)
   }
 
   res <- x[seu_hvgs, ]
