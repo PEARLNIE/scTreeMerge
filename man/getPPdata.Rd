@@ -4,12 +4,10 @@
 \alias{getPPdata}
 \title{Data preprocessing}
 \usage{
-getPPdata(x, filter = TRUE, nfeatures = 2000)
+getPPdata(x, nfeatures = 2000)
 }
 \arguments{
 \item{x}{an object of class \code{matrix}. Each column corresponds to a sample and each row to a variable.}
-
-\item{filter}{a logical value indicating whether to filter features. Default: \code{filter = TRUE}.}
 
 \item{nfeatures}{a numeric value represents the number of the filtered features.}
 }

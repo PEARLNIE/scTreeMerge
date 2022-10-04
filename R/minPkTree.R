@@ -31,7 +31,7 @@
 #' @importFrom stats cutree
 #' @importFrom phylogram as.dendrogram.phylo
 #' @importFrom dendextend cutree_1k.dendrogram
-#' @importFrom parallel detectCores makeCluster parLapply clusterExport
+#' @importFrom parallel detectCores makeCluster parLapply clusterExport stopCluster
 #' @examples
 #' data(GSE45719_268_count)
 #' processed_data <- getPPdata(GSE45719_268_count)
@@ -78,8 +78,6 @@ minPkTree <- function(x, tree, min_k = NULL, max_k = NULL, mcores = NULL) {
 
   c <- max_k - min_k + 1
 
-  tree <- lapply(tree, )
-
 
   mcl <- parallel::makeCluster(getOption("cl.cores", mcores))
 
@@ -108,7 +106,7 @@ minPkTree <- function(x, tree, min_k = NULL, max_k = NULL, mcores = NULL) {
 
   })
 
-  stopCluster(mcl)
+  parallel::stopCluster(mcl)
 
   colnames(res) <- paste("tree", rep(1:r), sep = "")
 

@@ -111,8 +111,7 @@ getDlist <- function(x, mtd = "euclidean", p = 2) {
 
   if (all(length(mtd) > 1 & "all" %in% mtd))
 
-    stop("'all' covers all 47 measures in this function. Once 'all' is chosen,
-         there's no need to choose any of the 47 measures.")
+    stop("\n", "'all' covers all 47 measures in this function. Once 'all' is chosen, there's no need to choose any of the 47 measures.", "\n")
 
 
   n <- c("maximum",
