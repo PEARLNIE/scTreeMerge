@@ -205,7 +205,7 @@ getDlist <- function(x, mtd = "euclidean", p = 2) {
 
                                           use.row.names = TRUE, as.dist.obj = TRUE,
 
-                                          diag = FALSE, upper = FALSE,mute.message = TRUE)
+                                          diag = FALSE, upper = FALSE, mute.message = TRUE)
       }
 
     }
