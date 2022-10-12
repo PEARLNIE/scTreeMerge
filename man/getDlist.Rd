@@ -78,22 +78,3 @@ This function implements 47 measures to quantify the disatnce between two object
 }
 }
 }
-\examples{
-data(GSE45719_268_count)
-processed_data <- getPPdata(GSE45719_268_count)
-
-d <- getDlist(x = t(processed_data), mtd = "euclidean")
-class(d)
-d <- getDlist(x = t(processed_data), mtd = "minkowski", p = 2)
-class(d)
-# make sure that all vectors sum up to 1.0 ...
-d <- getDlist(x = t(processed_data), mtd = "matusita")
-
-d <- getDlist(x = t(processed_data), mtd = c("euclidean", "manhattan"))
-class(d)
-d[[1]]
-class(d[[1]])
-
-d <- getDlist(x = t(processed_data), mtd = "all")
-class(d)
-}

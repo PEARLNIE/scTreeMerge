@@ -32,19 +32,7 @@
 #' @importFrom phylogram as.dendrogram.phylo
 #' @importFrom dendextend cutree_1k.dendrogram
 #' @importFrom parallel detectCores makeCluster parLapply clusterExport stopCluster
-#' @examples
-#' data(GSE45719_268_count)
-#' processed_data <- getPPdata(GSE45719_268_count)
-#' d <- getDlist(x = t(processed_data), mtd = c("maximum", "euclidean", "manhattan",
-#'                                            "minkowski", "chebyshev", "sorensen",
-#'                                            "gower", "soergel", "kulczynski_d",
-#'                                            "canberra", "lorentzian", "intersection",
-#'                                            "non-intersection", "wavehedges", "czekanowski"))
-#' b <- getBasicPartitions(d, method = "all")
-#' m <- findBitrees(b$partition, "all")
-#' s <- minPkTree(x = processed_data, tree = m)
-#' class(s)
-#' str(s)
+
 
 
 minPkTree <- function(x, tree, min_k = NULL, max_k = NULL, mcores = NULL) {
@@ -141,6 +129,24 @@ minPkTree <- function(x, tree, min_k = NULL, max_k = NULL, mcores = NULL) {
 #
 # # add banch length.
 # tr1 <- phangorn::acctran(tr1, dat)
+
+
+# data(GSE45719_268_count)
+# processed_data <- getPPdata(GSE45719_268_count)
+# d <- getDlist(x = t(processed_data), mtd = c("maximum", "euclidean", "manhattan",
+#                                            "minkowski", "chebyshev", "sorensen",
+#                                            "gower", "soergel", "kulczynski_d",
+#                                            "canberra", "lorentzian", "intersection",
+#                                            "non-intersection", "wavehedges", "czekanowski"))
+# b <- getBasicPartitions(d, method = "all")
+# m <- findBitrees(b$partition, "all")
+# s <- minPkTree(x = processed_data, tree = m)
+# class(s)
+# str(s)
+
+
+
+
 
 
 

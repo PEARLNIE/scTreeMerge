@@ -25,11 +25,7 @@
 #' @importFrom sigclust .vareigen .simnull
 #' @importFrom stats sd pnorm
 #'
-#' @examples
-#' data <- matrix(rnorm(1500*150),1500,150, dimnames = list(1:1500, 1:150))
-#' label <- setNames(object = rep(1:2, each = 75), colnames(data))
-#' p <- sigclust_n(data, 10, label)
-#' p$pval
+
 
 
 sigclust_n <- function(x, nsim, label)
@@ -104,3 +100,14 @@ sigclust_n <- function(x, nsim, label)
     return(0)
   }
 }
+
+
+# data <- matrix(rnorm(1500*150),1500,150, dimnames = list(1:1500, 1:150))
+# label <- setNames(object = rep(1:2, each = 75), colnames(data))
+# p <- sigclust_n(data, 10, label)
+# p$pval
+
+
+
+
+

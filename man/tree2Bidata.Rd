@@ -15,16 +15,3 @@ an object of class \code{data.frame}. Its columns represent samples and rows rep
 \description{
 This function is to extracting the information of bipartitions found in a series of trees.
 }
-\examples{
-data(GSE45719_268_count)
-processed_data <- getPPdata(GSE45719_268_count)
-d <- getDlist(x = t(processed_data), mtd = c("maximum", "euclidean", "manhattan",
-                                           "minkowski", "chebyshev", "sorensen",
-                                           "gower", "soergel", "kulczynski_d",
-                                           "canberra", "lorentzian", "intersection",
-                                           "non-intersection", "wavehedges", "czekanowski"))
-b <- getBasicPartitions(d, method = "all")
-tree <- b$partition
-bidat <- tree2Bidata(tree)
-str(bidat)
-}

@@ -17,8 +17,3 @@ an object of class \code{matrix} of which the 1st column represents the row inde
 \description{
 This function is to return the indexes with a user-defined value.
 }
-\examples{
-data(GSE45719_268_count)
-res <- findDim(x = GSE45719_268_count, object = 516)
-res
-}

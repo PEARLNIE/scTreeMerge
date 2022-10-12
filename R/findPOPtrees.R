@@ -23,19 +23,7 @@
 #' @import igraph
 #' @importFrom stringr str_split
 #'
-#' @examples
-#' data(GSE45719_268_count)
-#' processed_data <- getPPdata(GSE45719_268_count)
-#' d <- getDlist(x = t(processed_data), mtd = c("maximum", "euclidean", "manhattan",
-#'                                            "minkowski", "chebyshev", "sorensen",
-#'                                            "gower", "soergel", "kulczynski_d",
-#'                                            "canberra", "lorentzian", "intersection",
-#'                                            "non-intersection", "wavehedges", "czekanowski"))
-#'
-#' b <- getBasicPartitions(d, method = "all")
-#'
-#' m <- findPOPtrees(b$partition)
-#' attr(m[[1]], "number")
+
 
 findPOPtrees <- function(treelist) {
 
@@ -90,3 +78,21 @@ findPOPtrees <- function(treelist) {
     stop("No identical tree exists! Please consider another function findBitrees().")
   }
 }
+
+
+# data(GSE45719_268_count)
+# processed_data <- getPPdata(GSE45719_268_count)
+# d <- getDlist(x = t(processed_data), mtd = c("maximum", "euclidean", "manhattan",
+#                                            "minkowski", "chebyshev", "sorensen",
+#                                            "gower", "soergel", "kulczynski_d",
+#                                            "canberra", "lorentzian", "intersection",
+#                                            "non-intersection", "wavehedges", "czekanowski"))
+#
+# b <- getBasicPartitions(d, method = "all")
+#
+# m <- findPOPtrees(b$partition)
+# attr(m[[1]], "number")
+
+
+
+

@@ -19,12 +19,3 @@ the average of P values.
 \description{
 This function is to calculate the average P values of individual clusters.
 }
-\examples{
-require(ape)
-data(GSE45719_268_count)
-processed_data <- getPPdata(GSE45719_268_count)
-d1 <- getDlist(x = t(processed_data))
-b1 <- getBasicPartitions(d1)
-cl <- cutree(as.hclust.phylo(b1$partition$`euclidean + complete`), 3)
-meanp <- calPvalue(x = processed_data, clusters = cl, nsim = 10)
-}

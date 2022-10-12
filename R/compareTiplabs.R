@@ -19,14 +19,8 @@
 #' @export
 #' @importFrom ape all.equal.phylo
 #'
-#' @examples
-#' data(GSE45719_268_count)
-#' processed_data <- getPPdata(GSE45719_268_count)
-#' d <- getDlist(x = t(processed_data), mtd = "euclidean")
-#' b <- getBasicPartitions(d, method = "all")
-#'
-#' eq <- compareTiplabs(b$partition)
-#' head(eq)
+
+
 
 
 compareTiplabs <- function(treelist) {
@@ -51,3 +45,13 @@ compareTiplabs <- function(treelist) {
 
   return(eq)
 }
+
+
+# data(GSE45719_268_count)
+# processed_data <- getPPdata(GSE45719_268_count)
+# d <- getDlist(x = t(processed_data), mtd = "euclidean")
+# b <- getBasicPartitions(d, method = "all")
+#
+# eq <- compareTiplabs(b$partition)
+# head(eq)
+

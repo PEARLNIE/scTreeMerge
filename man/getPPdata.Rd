@@ -17,8 +17,3 @@ an object of class \code{matrix}.
 \description{
 This function is used to preprocess input data.
 }
-\examples{
-data(GSE45719_268_count)
-processed_data <- getPPdata(GSE45719_268_count)
-dim(processed_data)
-}

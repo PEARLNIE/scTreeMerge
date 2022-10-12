@@ -21,17 +21,3 @@ an object of class \code{list}:
 \description{
 This function creates basic partitions with different combinations of distance measures and hierarchical methods.
 }
-\examples{
-data(GSE45719_268_count)
-processed_data <- getPPdata(GSE45719_268_count)
-
-d <- getDlist(x = t(processed_data), mtd = "euclidean")
-class(d)
-b <- getBasicPartitions(d, method = "complete")
-class(b)
-b1 <- getBasicPartitions(d, method = c("complete", "average"))
-b2 <- getBasicPartitions(d, method = "all")
-
-d1 <- getDlist(x = t(processed_data), mtd = c("euclidean", "manhattan"))
-b3 <- getBasicPartitions(d1, method = "all")
-}

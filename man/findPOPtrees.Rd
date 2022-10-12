@@ -15,17 +15,3 @@ an object of class \code{list}.
 \description{
 This function is to find the popular trees with the frequency of tree types.
 }
-\examples{
-data(GSE45719_268_count)
-processed_data <- getPPdata(GSE45719_268_count)
-d <- getDlist(x = t(processed_data), mtd = c("maximum", "euclidean", "manhattan",
-                                           "minkowski", "chebyshev", "sorensen",
-                                           "gower", "soergel", "kulczynski_d",
-                                           "canberra", "lorentzian", "intersection",
-                                           "non-intersection", "wavehedges", "czekanowski"))
-
-b <- getBasicPartitions(d, method = "all")
-
-m <- findPOPtrees(b$partition)
-attr(m[[1]], "number")
-}

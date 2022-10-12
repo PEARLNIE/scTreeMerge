@@ -19,9 +19,3 @@ an object of class \code{list}.
 \description{
 This is a modified function.
 }
-\examples{
-data <- matrix(rnorm(1500*150),1500,150, dimnames = list(1:1500, 1:150))
-label <- setNames(object = rep(1:2, each = 75), colnames(data))
-p <- sigclust_n(data, 10, label)
-p$pval
-}

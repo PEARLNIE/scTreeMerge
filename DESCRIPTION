@@ -31,7 +31,10 @@ Imports: Seurat,
          dplyr,
          phylogram, 
          dendextend,
-         parallel
+         parallel,
+         SingleCellExperiment,
+         scater,
+         monocle
 biocViews: 
 Encoding: UTF-8
 LazyData: true

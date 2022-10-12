@@ -27,19 +27,7 @@
 #' @export
 #' @importFrom ape rtree as.phylo
 #' @importFrom stats hclust
-#' @examples
-#' data(GSE45719_268_count)
-#' processed_data <- getPPdata(GSE45719_268_count)
-#'
-#' d <- getDlist(x = t(processed_data), mtd = "euclidean")
-#' class(d)
-#' b <- getBasicPartitions(d, method = "complete")
-#' class(b)
-#' b1 <- getBasicPartitions(d, method = c("complete", "average"))
-#' b2 <- getBasicPartitions(d, method = "all")
-#'
-#' d1 <- getDlist(x = t(processed_data), mtd = c("euclidean", "manhattan"))
-#' b3 <- getBasicPartitions(d1, method = "all")
+
 
 getBasicPartitions <- function(d, method = "complete") {
   # Error checking.
@@ -112,6 +100,18 @@ getBasicPartitions <- function(d, method = "complete") {
 }
 
 
+# data(GSE45719_268_count)
+# processed_data <- getPPdata(GSE45719_268_count)
+#
+# d <- getDlist(x = t(processed_data), mtd = "euclidean")
+# class(d)
+# b <- getBasicPartitions(d, method = "complete")
+# class(b)
+# b1 <- getBasicPartitions(d, method = c("complete", "average"))
+# b2 <- getBasicPartitions(d, method = "all")
+#
+# d1 <- getDlist(x = t(processed_data), mtd = c("euclidean", "manhattan"))
+# b3 <- getBasicPartitions(d1, method = "all")
 
 
 

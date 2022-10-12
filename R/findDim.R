@@ -19,10 +19,7 @@
 #' @return an object of class \code{matrix} of which the 1st column represents the row index and the second represents the column index.
 #' @export
 #'
-#' @examples
-#' data(GSE45719_268_count)
-#' res <- findDim(x = GSE45719_268_count, object = 516)
-#' res
+
 
 
 findDim <- function(x, object) {
@@ -45,3 +42,12 @@ findDim <- function(x, object) {
   o <- matrix(c(row, col),ncol = 2, dimnames = list(NULL, c("row", "col")))
   o
 }
+
+
+
+
+# data(GSE45719_268_count)
+# res <- findDim(x = GSE45719_268_count, object = 516)
+# res
+
+

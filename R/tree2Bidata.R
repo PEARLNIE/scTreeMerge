@@ -19,18 +19,7 @@
 #' @return an object of class \code{data.frame}. Its columns represent samples and rows represent different bipartitions.
 #' @export
 #' @importFrom ape .uncompressTipLabel di2multi prop.part
-#' @examples
-#' data(GSE45719_268_count)
-#' processed_data <- getPPdata(GSE45719_268_count)
-#' d <- getDlist(x = t(processed_data), mtd = c("maximum", "euclidean", "manhattan",
-#'                                            "minkowski", "chebyshev", "sorensen",
-#'                                            "gower", "soergel", "kulczynski_d",
-#'                                            "canberra", "lorentzian", "intersection",
-#'                                            "non-intersection", "wavehedges", "czekanowski"))
-#' b <- getBasicPartitions(d, method = "all")
-#' tree <- b$partition
-#' bidat <- tree2Bidata(tree)
-#' str(bidat)
+
 
 
 tree2Bidata <- function(tree) {
@@ -95,4 +84,17 @@ tree2Bidata <- function(tree) {
   return(data)
 }
 
+
+
+# data(GSE45719_268_count)
+# processed_data <- getPPdata(GSE45719_268_count)
+# d <- getDlist(x = t(processed_data), mtd = c("maximum", "euclidean", "manhattan",
+#                                            "minkowski", "chebyshev", "sorensen",
+#                                            "gower", "soergel", "kulczynski_d",
+#                                            "canberra", "lorentzian", "intersection",
+#                                            "non-intersection", "wavehedges", "czekanowski"))
+# b <- getBasicPartitions(d, method = "all")
+# tree <- b$partition
+# bidat <- tree2Bidata(tree)
+# str(bidat)
 

@@ -23,17 +23,3 @@ an object of class \code{Stree} which is a list.
 \description{
 This function is to find the tree with the optimal k identified by the averaged P value. The averaged P value depends on how different the k clusters are. The smaller the averaged P value is, the more separated the clusters are.
 }
-\examples{
-data(GSE45719_268_count)
-processed_data <- getPPdata(GSE45719_268_count)
-d <- getDlist(x = t(processed_data), mtd = c("maximum", "euclidean", "manhattan",
-                                           "minkowski", "chebyshev", "sorensen",
-                                           "gower", "soergel", "kulczynski_d",
-                                           "canberra", "lorentzian", "intersection",
-                                           "non-intersection", "wavehedges", "czekanowski"))
-b <- getBasicPartitions(d, method = "all")
-m <- findBitrees(b$partition, "all")
-s <- minPkTree(x = processed_data, tree = m)
-class(s)
-str(s)
-}

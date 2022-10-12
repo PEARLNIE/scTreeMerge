@@ -17,13 +17,3 @@ an object of class \code{multiPhylo} which is a list. The elements of this list 
 \description{
 This function is to find the optimal trees from a bipartition data.
 }
-\examples{
-data(GSE45719_268_count)
-processed_data <- getPPdata(GSE45719_268_count)
-d <- getDlist(x = t(processed_data), mtd = c("maximum", "euclidean"))
-b <- getBasicPartitions(d, method = "all")
-
-m <- findBitrees(b$partition, "dtree")
-m1 <- findBitrees(b$partition, c("dtree", "ptree"))
-m2 <- findBitrees(b$partition, "all")
-}

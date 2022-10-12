@@ -15,12 +15,3 @@ an object of class \code{matrix}. \code{TRUE} indicates that two trees are of th
 \description{
 This function is to compare tip labels of each trees.
 }
-\examples{
-data(GSE45719_268_count)
-processed_data <- getPPdata(GSE45719_268_count)
-d <- getDlist(x = t(processed_data), mtd = "euclidean")
-b <- getBasicPartitions(d, method = "all")
-
-eq <- compareTiplabs(b$partition)
-head(eq)
-}

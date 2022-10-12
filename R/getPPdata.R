@@ -19,10 +19,7 @@
 #' @export
 #' @importFrom Seurat CreateSeuratObject FindVariableFeatures VariableFeatures
 #'
-#' @examples
-#' data(GSE45719_268_count)
-#' processed_data <- getPPdata(GSE45719_268_count)
-#' dim(processed_data)
+
 
 
 getPPdata <- function(x, nfeatures = 2000) {
@@ -59,3 +56,11 @@ getPPdata <- function(x, nfeatures = 2000) {
 
   res <- x[seu_hvgs, ]
 }
+
+
+# data(GSE45719_268_count)
+# processed_data <- getPPdata(GSE45719_268_count)
+# dim(processed_data)
+
+
+

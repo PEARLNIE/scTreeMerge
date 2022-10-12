@@ -24,15 +24,8 @@
 #' @importFrom phangorn as.phyDat optim.parsimony pratchet parsimony pml optim.pml upgma
 #' @importFrom ape nj rtree
 #' @importFrom stats anova AIC
-#' @examples
-#' data(GSE45719_268_count)
-#' processed_data <- getPPdata(GSE45719_268_count)
-#' d <- getDlist(x = t(processed_data), mtd = c("maximum", "euclidean"))
-#' b <- getBasicPartitions(d, method = "all")
-#'
-#' m <- findBitrees(b$partition, "dtree")
-#' m1 <- findBitrees(b$partition, c("dtree", "ptree"))
-#' m2 <- findBitrees(b$partition, "all")
+
+
 
 findBitrees <- function(treelist, format = "all") {
 
@@ -143,3 +136,14 @@ findBitrees <- function(treelist, format = "all") {
   names(res) <- res_name
   return(res)
 }
+
+# data(GSE45719_268_count)
+# processed_data <- getPPdata(GSE45719_268_count)
+# d <- getDlist(x = t(processed_data), mtd = c("maximum", "euclidean"))
+# b <- getBasicPartitions(d, method = "all")
+
+# m <- findBitrees(b$partition, "dtree")
+# m1 <- findBitrees(b$partition, c("dtree", "ptree"))
+# m2 <- findBitrees(b$partition, "all")
+
+

@@ -25,14 +25,8 @@
 #' @export
 #' @importFrom stats shapiro.test wilcox.test t.test
 #'
-#' @examples
-#' require(ape)
-#' data(GSE45719_268_count)
-#' processed_data <- getPPdata(GSE45719_268_count)
-#' d1 <- getDlist(x = t(processed_data))
-#' b1 <- getBasicPartitions(d1)
-#' cl <- cutree(as.hclust.phylo(b1$partition$`euclidean + complete`), 3)
-#' meanp <- calPvalue(x = processed_data, clusters = cl, nsim = 10)
+
+
 
 
 
@@ -92,3 +86,13 @@ calPvalue <- function(x, clusters, nsim = 1000) {
   meanp <- sum(pval)/length(pval)
   meanp
 }
+
+
+# require(ape)
+# data(GSE45719_268_count)
+# processed_data <- getPPdata(GSE45719_268_count)
+# d1 <- getDlist(x = t(processed_data))
+# b1 <- getBasicPartitions(d1)
+# cl <- cutree(as.hclust.phylo(b1$partition$`euclidean + complete`), 3)
+# meanp <- calPvalue(x = processed_data, clusters = cl, nsim = 10)
+
