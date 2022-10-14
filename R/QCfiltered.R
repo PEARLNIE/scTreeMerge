@@ -19,10 +19,6 @@ QCfiltered <- function(data, meta) {
 
   message("cell-level")
 
-  library(scater)
-
-  library(SingleCellExperiment)
-
   # create a SingleCellExperiment object
   sce <- SingleCellExperiment::SingleCellExperiment(assays = list(counts = as.matrix(data),
 
