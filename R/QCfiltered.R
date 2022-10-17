@@ -11,13 +11,19 @@
 #'
 #' @return an object of class \code{list}
 #' @export
-#' @importFrom SingleCellExperiment SingleCellExperiment
+#' @importFrom SingleCellExperiment SingleCellExperiment counts reducedDim colData
 #' @importFrom scater addPerCellQC isOutlier
-#' @importFrom monocle newCellDataSet detectGenes
+#' @importFrom DropletUtils emptyDrops
+#' @importFrom BiocSingular runPCA
+#' @importFrom scDblFinder computeDoubletDensity
 
 QCfiltered <- function(data, meta) {
 
-  message("cell-level")
+  # ----------------------------------
+  # *********** cell-level ***********
+  # ----------------------------------
+
+  cat("******* cell-level *******")
 
   # create a SingleCellExperiment object
   sce <- SingleCellExperiment::SingleCellExperiment(assays = list(counts = as.matrix(data),
@@ -32,31 +38,83 @@ QCfiltered <- function(data, meta) {
   sce <- scater::addPerCellQC(sce, detection_limit = 0, flatten = FALSE)
 
 
-  # ----------------------------------
-  # *********** cell-level ***********
-  # ----------------------------------
+  # Step-1 empty droplets
+
+  cat("Step-1: empty droplets")
+
+  x <- try({set.seed(2022)
+
+  e_out <- DropletUtils::emptyDrops(counts(sce))
+
+  sce <- sce[, which(e_out$FDR <= 0.001)]}, silent = TRUE)
+
+  if ("try-error" %in% class(x)) {
+
+    message("No empty droplets in matrix!")
+
+  } else {
+
+    message(length(e_out$FDR <= 0.001), " empty droplets have been excluded!")
+
+  }
+
+  # A rough filtration
+  sce <- sce[, colData(sce)$sum < 200]
 
 
-  # Over 4, the minimum number of MADs away from median required for a value to be called an outlier.
-  reads_drop <- scater::isOutlier(as.numeric(sce$sum), nmads = 4, type = "lower", log = TRUE)
+  # Step-2 doublets
 
-  feature_drop <- scater::isOutlier(sce$detected, nmads = 4, type = "lower", log = TRUE)
+  cat("Step-2: doublets")
+
+  # with simulation
+  set.seed(2022)
+
+  sce <- BiocSingular::runPCA(sce)
+
+  set.seed(2023)
+
+  dbl_dens <- scDblFinder::computeDoubletDensity(sce,
+
+                                                 d = ncol(reducedDim(sce)))
+
+  sce$DoubletScore <- dbl_dens
+
+  dbl_out <- scater::isOutlier(dbl_dens)
+
+  # which(dbl.dens > 3)
+
+  sce <- sce[, !dbl_out]
+
+  message(sum(dbl_out), " doublets have been excluded!")
 
 
-  keep_samples <- !(reads_drop | feature_drop)
+  # Step-3 Strict filtering
 
-  keep_samples[which(is.na(keep_samples))] <- FALSE
+  # Over 3, the minimum number of MADs away from median required for a value to be called an outlier.
+  reads_drop <- scater::isOutlier(as.numeric(sce$sum), nmads = 3, type = "lower", log = TRUE)
 
-  sce <- sce[ , keep_samples]
+  feature_drop <- scater::isOutlier(sce$detected, nmads = 3, type = "lower", log = TRUE)
+
+  mito_drop <- colData(sce)$subsets$Mito$percent > 10
+
+  # discard <- qc.lib | qc.nexprs | qc.spike | qc.mito
+  discard <- reads_drop | feature_drop | mito_drop
+
+  # Summarize the number of cells removed for each reason.
+  DataFrame(LibSize = sum(reads_drop), NExprs = sum(feature_drop),
+
+            MitoProp = sum(qc.mito), Total = sum(discard))
+
+  message(sum(discard), " low-quality cells have been excluded!")
+
+  sce <- sce[ , !discard]
 
 
   # ----------------------------------
   # *********** gene-level ***********
   # ----------------------------------
 
-  message("gene-level")
-
-  library(monocle)
+  cat("******* gene-level *******")
 
   names(rowData(sce)) <- "gene_short_name"
 
@@ -68,44 +126,19 @@ QCfiltered <- function(data, meta) {
 
   # featureNames(fd) <- rowData(sce)$gene_short_name
 
+  cds <- newCellDataSet(counts(sce), featureData = fd, phenoData = pd,
 
-
-
-
-  cds <- monocle::newCellDataSet(counts(sce), featureData = fd, phenoData = pd,
-
-                                 lowerDetectionLimit = 0, expressionFamily = negbinomial.size())
+                        lowerDetectionLimit = 0, expressionFamily = negbinomial.size())
 
   # how many cells each feature in a CellDataSet object that are detectably expressed.
-  cds <- monocle::detectGenes(cds, min_expr = 0)
+  cds <- detectGenes(cds, min_expr = 0)
 
   # keep genes expressed more than five percent of cells
-  expr_genes <- row.names(subset(fData(cds), num_cells_expressed >= dim(cds)[2]*0.05))
+  genes_drop <- row.names(subset(fData(cds), num_cells_expressed < dim(cds)[2]*0.05))
 
-  cds <- cds[expr_genes, ]
+  message(sum(genes_drop), " genes have been excluded!")
 
-
-  # In each types, keep genes expressed more than five percent of cells
-  remove_genes <- list()
-
-  for(i in unique(pData(cds)$cell_type)) {
-
-    cds_tmp <- cds[, rownames(subset(pData(cds), cell_type == i))] %>%
-
-      monocle::detectGenes(min_expr = 0)
-
-    remove_genes[[i]] <- row.names(subset(fData(cds_tmp), num_cells_expressed < dim(cds_tmp)[2]*0.05))
-
-  }
-
-  remove_genes_all <- unique(unlist(remove_genes))
-
-  keep_genes <- setdiff(rownames(fData(cds)), remove_genes_all)
-
-  cds <- cds[keep_genes, ]
-
-  dim(cds)
-
+  cds <- cds[!expr_genes, ]
 
 
 
