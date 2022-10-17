@@ -4,12 +4,14 @@
 \alias{QCfiltered}
 \title{Quality control in scTreeMerge}
 \usage{
-QCfiltered(data, meta)
+QCfiltered(data, meta, species)
 }
 \arguments{
 \item{data}{an object of class \code{matrix} with cells on columns and genes on rows.}
 
 \item{meta}{an object of class \code{matrix}. It contains at least two columns: `cell_id` and `cell_type`.}
+
+\item{species}{a character string.It could be one of \code{"huaman"} or \code{"mouse"}}
 }
 \value{
 an object of class \code{list}

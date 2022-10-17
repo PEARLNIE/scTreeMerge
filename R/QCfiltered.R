@@ -8,22 +8,23 @@
 #'
 #' @param data an object of class \code{matrix} with cells on columns and genes on rows.
 #' @param meta an object of class \code{matrix}. It contains at least two columns: `cell_id` and `cell_type`.
+#' @param species a character string.It could be one of \code{"huaman"} or \code{"mouse"}
 #'
 #' @return an object of class \code{list}
 #' @export
-#' @importFrom SingleCellExperiment SingleCellExperiment counts reducedDim colData
-#' @importFrom scater addPerCellQC isOutlier
+#' @importFrom SingleCellExperiment SingleCellExperiment counts reducedDim rowData colData
+#' @importFrom scater addPerCellQC isOutlier runPCA
 #' @importFrom DropletUtils emptyDrops
-#' @importFrom BiocSingular runPCA
 #' @importFrom scDblFinder computeDoubletDensity
 
-QCfiltered <- function(data, meta) {
+
+QCfiltered <- function(data, meta, species) {
 
   # ----------------------------------
   # *********** cell-level ***********
   # ----------------------------------
 
-  cat("******* cell-level *******")
+  cat("******* cell-level *******", fill = TRUE)
 
   # create a SingleCellExperiment object
   sce <- SingleCellExperiment::SingleCellExperiment(assays = list(counts = as.matrix(data),
@@ -35,12 +36,26 @@ QCfiltered <- function(data, meta) {
   # define feature names in feature_symbol column
   rowData(sce)$feature_symbol <- rownames(sce)
 
-  sce <- scater::addPerCellQC(sce, detection_limit = 0, flatten = FALSE)
+  # Identifying the mitochondrial transcripts in our SingleCellExperiment.
+  location <- rowRanges(sce)
+
+  if(species == "huamn") {
+
+    is_mito <- any(seqnames(location) == "MT")
+
+  } else {
+
+    is_mito <- any(seqnames(location) == "Mt")
+
+  }
+
+  sce <- scater::addPerCellQC(sce, subsets = list(Mito = is_mito), detection_limit = 0, flatten = FALSE)
+
 
 
   # Step-1 empty droplets
 
-  cat("Step-1: empty droplets")
+  cat("Step-1: empty droplets", fill = TRUE)
 
   x <- try({set.seed(2022)
 
@@ -59,17 +74,17 @@ QCfiltered <- function(data, meta) {
   }
 
   # A rough filtration
-  sce <- sce[, colData(sce)$sum < 200]
+  sce <- sce[, colData(sce)$sum >= 200]
 
 
   # Step-2 doublets
 
-  cat("Step-2: doublets")
+  cat("Step-2: doublets", fill = TRUE)
 
   # with simulation
   set.seed(2022)
 
-  sce <- BiocSingular::runPCA(sce)
+  sce <- scater::runPCA(sce)
 
   set.seed(2023)
 
@@ -97,13 +112,12 @@ QCfiltered <- function(data, meta) {
 
   mito_drop <- colData(sce)$subsets$Mito$percent > 10
 
-  # discard <- qc.lib | qc.nexprs | qc.spike | qc.mito
   discard <- reads_drop | feature_drop | mito_drop
 
   # Summarize the number of cells removed for each reason.
   DataFrame(LibSize = sum(reads_drop), NExprs = sum(feature_drop),
 
-            MitoProp = sum(qc.mito), Total = sum(discard))
+            MitoProp = sum(mito_drop), Total = sum(discard))
 
   message(sum(discard), " low-quality cells have been excluded!")
 
@@ -114,37 +128,22 @@ QCfiltered <- function(data, meta) {
   # *********** gene-level ***********
   # ----------------------------------
 
-  cat("******* gene-level *******")
+  cat("******* gene-level *******", fill = TRUE)
 
-  names(rowData(sce)) <- "gene_short_name"
-
-  pd <- new("AnnotatedDataFrame", data = as.data.frame(colData(sce)))
-
-  # featureNames(pd) <- rownames(pd)
-
-  fd <- new("AnnotatedDataFrame", data = as.data.frame(rowData(sce)))
-
-  # featureNames(fd) <- rowData(sce)$gene_short_name
-
-  cds <- newCellDataSet(counts(sce), featureData = fd, phenoData = pd,
-
-                        lowerDetectionLimit = 0, expressionFamily = negbinomial.size())
-
-  # how many cells each feature in a CellDataSet object that are detectably expressed.
-  cds <- detectGenes(cds, min_expr = 0)
+  num_cells_expressed <- scater::nexprs(sce, byrow = TRUE)
 
   # keep genes expressed more than five percent of cells
-  genes_drop <- row.names(subset(fData(cds), num_cells_expressed < dim(cds)[2]*0.05))
+  genes_drop <- num_cells_expressed < dim(sce)[2]*0.05
 
   message(sum(genes_drop), " genes have been excluded!")
 
-  cds <- cds[!expr_genes, ]
+  sce <- sce[!genes_drop, ]
 
 
 
-  res <- list(data_qc = exprs(cds),
+  res <- list(data_qc = counts(sce),
 
-              meta_qc = pData(cds)[, 1:length(meta)])
+              meta_qc = as.data.frame(colData(sce)[, 1:length(meta)]))
 
   return(res)
 

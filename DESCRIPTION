@@ -35,7 +35,6 @@ Imports: Seurat,
          SingleCellExperiment,
          scater,
          DropletUtils,
-         BiocSingular,
          scDblFinder
 biocViews: 
 Encoding: UTF-8
