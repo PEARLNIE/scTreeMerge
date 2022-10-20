@@ -145,7 +145,7 @@ QCfiltered <- function(data, meta, species) {
 
   res <- list(data_qc = counts(sce),
 
-              meta_qc = as.data.frame(colData(sce)[, 1:length(meta)]))
+              meta_qc = as.data.frame(colData(sce)[, 1:ncol(meta)]))
 
   return(res)
 
