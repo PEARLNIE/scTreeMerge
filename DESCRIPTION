@@ -35,7 +35,12 @@ Imports: Seurat,
          SingleCellExperiment,
          scater,
          DropletUtils,
-         scDblFinder
+         scDblFinder,
+         EnsDb.Mmusculus.v79,
+         SummarizedExperiment,
+         AnnotationDbi,
+         Matrix,
+         VGAM
 biocViews: 
 Encoding: UTF-8
 LazyData: true

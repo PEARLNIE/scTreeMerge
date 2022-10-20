@@ -12,10 +12,12 @@
 #'
 #' @return an object of class \code{list}
 #' @export
-#' @importFrom SingleCellExperiment SingleCellExperiment counts reducedDim rowData colData
+#' @importFrom SingleCellExperiment SingleCellExperiment counts reducedDim
 #' @importFrom scater addPerCellQC isOutlier runPCA
 #' @importFrom DropletUtils emptyDrops
 #' @importFrom scDblFinder computeDoubletDensity
+#' @importFrom SummarizedExperiment rowData colData rowRanges
+#' @importFrom GenomeInfoDb seqnames
 
 
 QCfiltered <- function(data, meta, species) {
@@ -34,18 +36,18 @@ QCfiltered <- function(data, meta, species) {
                                                     colData = meta)
 
   # define feature names in feature_symbol column
-  rowData(sce)$feature_symbol <- rownames(sce)
+  SummarizedExperiment::rowData(sce)$feature_symbol <- rownames(sce)
 
   # Identifying the mitochondrial transcripts in our SingleCellExperiment.
-  location <- rowRanges(sce)
+  location <- SummarizedExperiment::rowRanges(sce)
 
   if(species == "huamn") {
 
-    is_mito <- any(seqnames(location) == "MT")
+    is_mito <- any(GenomeInfoDb::seqnames(location) == "MT")
 
   } else {
 
-    is_mito <- any(seqnames(location) == "Mt")
+    is_mito <- any(GenomeInfoDb::seqnames(location) == "Mt")
 
   }
 
@@ -115,9 +117,9 @@ QCfiltered <- function(data, meta, species) {
   discard <- reads_drop | feature_drop | mito_drop
 
   # Summarize the number of cells removed for each reason.
-  DataFrame(LibSize = sum(reads_drop), NExprs = sum(feature_drop),
-
-            MitoProp = sum(mito_drop), Total = sum(discard))
+  # DataFrame(LibSize = sum(reads_drop), NExprs = sum(feature_drop),
+  #
+  #           MitoProp = sum(mito_drop), Total = sum(discard))
 
   message(sum(discard), " low-quality cells have been excluded!")
 
