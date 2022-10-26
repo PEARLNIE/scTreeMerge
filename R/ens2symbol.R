@@ -23,7 +23,7 @@ ens2symbol <- function(data, species = "mouse") {
                                    keytype = "GENEID")
 
 
-    annot <- add_count(annot, SYMBOL)
+    annot <- dplyr::add_count(annot, SYMBOL)
     # annot_filter <- dplyr::filter(annot, n>1)
 
     zero_drop <- sapply(annot$SYMBOL, nchar) == 0
