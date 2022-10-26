@@ -28,7 +28,7 @@
 findPOPtrees <- function(treelist) {
 
   namelist <- ifelse(is.null(names(treelist)),
-                     paste("tree", 1:length(tree), sep = ""),
+                     paste("tree", 1:length(treelist), sep = ""),
                      names(treelist))
 
   # ---- Comparing tip labels.
