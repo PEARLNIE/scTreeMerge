@@ -46,12 +46,12 @@ getBasicPartitions <- function(d, method = "complete") {
         for (e in 1:length(d)) {
           if (any(is.nan(d[[e]])))
             er <- c(er, dname[e])
-          if (!is.null(er) & e == length(d)) {
-            print(er)
-            stop("d should not be used because it has NaNs value producted by the indexes above!")
-          }
         }
-        dname <- names(d)
+        if (!is.null(er)) {
+          print(er)
+          stop("d should not be used because it has NaNs value producted by the indexes above!")
+        }
+
       }
     }
   }

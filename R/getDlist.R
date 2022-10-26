@@ -197,6 +197,38 @@ getDlist <- function(x, mtd = "euclidean", p = 2) {
 
   names(res) <- mtd
 
+  if (inherits(res, "list")) {
+
+    er <- NULL
+
+    for (i in 1:length(res)) {
+
+      if(any(is.nan(res[[i]])))
+
+        er <- c(er, mtd[i])
+
+    }
+
+    if (!is.null(er)) {
+
+      warning("The results of ", paste(er, collapse = ", "), " were deleted. because it has NaNs.")
+
+      res[match(er, mtd)] <- NULL
+
+    }
+
+  } else {
+
+    if (inherits(res, "dist")) {
+
+      if (any(is.nan(res)))
+
+          warning("The result of ", mtd, " has NaNs.")
+
+    }
+  }
+
+
   if (q == 1) {
 
     return(res[[1]])
