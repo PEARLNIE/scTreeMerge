@@ -96,7 +96,7 @@ getBasicPartitions <- function(d, method = "complete") {
   res <- res[2:length(res)]
   ns <- names(res)
 
-  return(list("partition" = res))
+  return(res)
 }
 
 
