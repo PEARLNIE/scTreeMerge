@@ -54,7 +54,8 @@ getPPdata <- function(x, nfeatures = 2000) {
     seu_hvgs <- Seurat::VariableFeatures(seu2)
   }
 
-  res <- x[seu_hvgs, ]
+  res <- as.matrix(seu2[["RNA"]]@counts[seu_hvgs, ])
+
 }
 
 
